@@ -1,11 +1,12 @@
 import { subscribe } from "valtio/vanilla";
+import i18next from "i18next";
 
 const initView = (watchedState) => {
   const search = document.querySelector("input");
   const feedback = document.querySelector(".feedback");
 
   const renderForm = () => {
-    feedback.textContent = watchedState.form.error;
+    feedback.textContent = i18next.t(watchedState.form.error);
     if (watchedState.form.valid) {
       search.classList.remove("border-red-500");
       search.classList.add("border-gray-300");

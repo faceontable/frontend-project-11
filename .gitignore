@@ -3,6 +3,7 @@
 .idea
 .pnpm-store
 .opencode/
+AGENTS.md
 *.cpuprofile
 *.local
 *.log

@@ -1,7 +1,19 @@
 import "./style.css";
 import { object, string } from "yup";
-import { proxy, subscribe, snapshot } from "valtio/vanilla";
+import { proxy } from "valtio/vanilla";
 import initView from "./view.js";
+import i18next from "i18next";
+import { en, ru } from "./locales/index.js";
+import { setLocale } from "yup";
+
+i18next.init({
+  lng: "ru", // if you're using a language detector, do not define the lng option
+  debug: true,
+  resources: {
+    en,
+    ru,
+  },
+});
 
 const initialState = {
   addedUrls: [],
@@ -14,12 +26,19 @@ const initialState = {
 
 const watchedState = proxy(initialState);
 
+setLocale({
+  string: {
+    url: () => "url.validation.url",
+  },
+  mixed: {
+    notOneOf: () => "url.validation.notOneOf",
+    required: () => "url.validation.required",
+  },
+});
+
 const validateUrl = (url, existedUrls) => {
-  let schema = object({
-    url: string()
-      .url("Ссылка должна быть валидным URL")
-      .required("Не должно быть пустым")
-      .notOneOf(existedUrls, "RSS уже существует"),
+  const schema = object({
+    url: string().url().required().notOneOf(existedUrls),
   });
   return schema.validate({ url });
 };
