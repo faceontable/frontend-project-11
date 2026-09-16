@@ -1,10 +1,12 @@
 import "./style.css";
-import { object, string } from "yup";
-import { proxy } from "valtio/vanilla";
+import { object, string, setLocale } from "yup";
+import { proxy, subscribe } from "valtio/vanilla";
 import initView from "./view.js";
 import i18next from "i18next";
 import { en, ru } from "./locales/index.js";
-import { setLocale } from "yup";
+import axios from "axios";
+import parseRSS from "./parser.js";
+import locI18next from 'loc-i18next';
 
 i18next.init({
   lng: "ru", // if you're using a language detector, do not define the lng option
@@ -13,10 +15,21 @@ i18next.init({
     en,
     ru,
   },
+},()=>{
+  const localize = locI18next.init(i18next, {
+    selectorAttr: 'data-i18n', // имя атрибута (по умолчанию data-i18n)
+    targetAttr: 'i18n-target',
+    optionsAttr: 'i18n-options',
+    useOptionsAttr: false,
+    parseDefaultValueFromContent: true
+  });
+  localize('body');
 });
 
 const initialState = {
   addedUrls: [],
+  feeds: [],
+  posts: [],
   form: {
     url: "",
     valid: true,
@@ -64,5 +77,22 @@ form.addEventListener("submit", (e) => {
       console.error("Validation error:", err.errors);
     });
 });
+
+const fetchFeed = () => {
+  const url = watchedState.addedUrls.at(-1);
+  axios
+    .get(
+      `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`,
+    )
+    .then(function (response) {
+      const { feed, posts } = parseRSS(response.data.contents);
+      const feedId = crypto.randomUUID();
+      watchedState.feeds.push({ id: feedId, ...feed });
+      posts.forEach((post) =>
+        watchedState.posts.push({ id: crypto.randomUUID(), ...post, feedId }),
+      );
+    });
+};
+subscribe(watchedState.addedUrls, fetchFeed);
 
 initView(watchedState);
