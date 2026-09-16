@@ -6,25 +6,28 @@ import i18next from "i18next";
 import { en, ru } from "./locales/index.js";
 import axios from "axios";
 import parseRSS from "./parser.js";
-import locI18next from 'loc-i18next';
+import locI18next from "loc-i18next";
 
-i18next.init({
-  lng: "ru", // if you're using a language detector, do not define the lng option
-  debug: true,
-  resources: {
-    en,
-    ru,
+i18next.init(
+  {
+    lng: "en",
+    debug: true,
+    resources: {
+      en,
+      ru,
+    },
   },
-},()=>{
-  const localize = locI18next.init(i18next, {
-    selectorAttr: 'data-i18n', // имя атрибута (по умолчанию data-i18n)
-    targetAttr: 'i18n-target',
-    optionsAttr: 'i18n-options',
-    useOptionsAttr: false,
-    parseDefaultValueFromContent: true
-  });
-  localize('body');
-});
+  () => {
+    const localize = locI18next.init(i18next, {
+      selectorAttr: "data-i18n", // имя атрибута (по умолчанию data-i18n)
+      targetAttr: "i18n-target",
+      optionsAttr: "i18n-options",
+      useOptionsAttr: false,
+      parseDefaultValueFromContent: true,
+    });
+    localize("body");
+  },
+);
 
 const initialState = {
   addedUrls: [],
@@ -91,6 +94,13 @@ const fetchFeed = () => {
       posts.forEach((post) =>
         watchedState.posts.push({ id: crypto.randomUUID(), ...post, feedId }),
       );
+      watchedState.form.valid = true;
+      watchedState.form.error = "rss-aggregator.form.feedback.success";
+    })
+    .catch((err) => {
+      watchedState.form.valid = false;
+      watchedState.form.error = "rss-aggregator.form.feedback.error";
+      console.error("Fetch or parse error:", err);
     });
 };
 subscribe(watchedState.addedUrls, fetchFeed);

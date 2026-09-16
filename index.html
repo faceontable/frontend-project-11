@@ -7,53 +7,78 @@
     <title>RSS Агрегатор</title>
   </head>
 
-  <body>
+  <body class="bg-slate-50 text-slate-900 min-h-screen">
     <div id="app">
       <div
-        class="search-form bg-slate-800 text-white py-16 px-4 md:px-8 shadow-md"
+        class="search-form bg-slate-800 text-white py-12 md:py-16 px-4 md:px-8 shadow-md"
       >
-        <h1 class="text-4xl" data-i18n="rss-aggregator.title">RSS Агрегатор</h1>
-        <p data-i18n="rss-aggregator.description">
-          Начните читать RSS сегодня! Это легко, это красиво.
-        </p>
-        <form>
-          <div class="flex flex-col sm:flex-row gap-3">
-            <label
-              for="url-input"
-              class="sr-only"
-              data-i18n="rss-aggregator.form.placeholder"
-            >
-              Ссылка RSS
-            </label>
-            <input
-              class="flex-grow px-4 py-3 border border-slate-300 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-black"
-              type="text"
-              placeholder="Ссылка RSS"
-              id="url-input"
-              name="url"
-              data-i18n="[placeholder]rss-aggregator.form.placeholder"
-            />
-            <button
-              class="px-6 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded-md"
-              type="submit"
-              data-i18n="rss-aggregator.form.submit"
-            >
-              Добавить
-            </button>
-          </div>
-          <p data-i18n="rss-aggregator.form.example">
-            Например https://ru.hexlet.io/lessons.rss
+        <div class="max-w-4xl mx-auto">
+          <h1 class="text-4xl font-bold mb-3" data-i18n="rss-aggregator.title">RSS Агрегатор</h1>
+          <p class="text-lg text-slate-300 mb-6" data-i18n="rss-aggregator.description">
+            Начните читать RSS сегодня! Это легко, это красиво.
           </p>
-          <p class="feedback text-sm mt-2"></p>
-        </form>
+          <form class="max-w-2xl">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <label
+                for="url-input"
+                class="sr-only"
+                data-i18n="rss-aggregator.form.placeholder"
+              >
+                Ссылка RSS
+              </label>
+              <input
+                class="flex-grow px-4 py-3 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900"
+                type="text"
+                placeholder="Ссылка RSS"
+                id="url-input"
+                name="url"
+                data-i18n="[placeholder]rss-aggregator.form.placeholder"
+              />
+              <button
+                class="px-6 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded-md shadow-sm transition-colors"
+                type="submit"
+                data-i18n="rss-aggregator.form.submit"
+              >
+                Добавить
+              </button>
+            </div>
+            <p class="text-sm text-slate-400 mt-2 mb-1" data-i18n="rss-aggregator.form.example">
+              Например https://ru.hexlet.io/lessons.rss
+            </p>
+            <p class="feedback text-sm font-medium min-h-[1.25rem]"></p>
+          </form>
+        </div>
       </div>
-      <div>
-        <h2 data-i18n="rss-aggregator.feeds.title">Feeds</h2>
-      </div>
-      <div>
-        <h2 data-i18n="rss-aggregator.posts.title">Posts</h2>
-        <ul></ul>
-      </div>
+
+      <main class="max-w-4xl mx-auto px-4 py-8 md:py-12">
+        <section id="feeds-section" class="hidden mb-10">
+          <h2
+            class="text-2xl font-bold mb-4 text-slate-900"
+            data-i18n="rss-aggregator.feeds.title"
+          >
+            Feeds
+          </h2>
+          <div
+            class="border border-slate-200 rounded-lg p-6 bg-white shadow-sm"
+          >
+            <ul id="feeds" class="divide-y divide-slate-200"></ul>
+          </div>
+        </section>
+
+        <section id="posts-section" class="hidden">
+          <h2
+            class="text-2xl font-bold mb-4 text-slate-900"
+            data-i18n="rss-aggregator.posts.title"
+          >
+            Posts
+          </h2>
+          <div
+            class="border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden"
+          >
+            <ul id="posts" class="divide-y divide-slate-200 mb-0"></ul>
+          </div>
+        </section>
+      </main>
     </div>
     <script type="module" src="/src/main.js"></script>
   </body>
