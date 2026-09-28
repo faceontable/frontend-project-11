@@ -81,19 +81,29 @@ form.addEventListener("submit", (e) => {
     });
 });
 
-const fetchFeed = () => {
-  const url = watchedState.addedUrls.at(-1);
-  axios
+const loadFeed = (url) => {
+  return axios
     .get(
       `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`,
     )
     .then(function (response) {
-      const { feed, posts } = parseRSS(response.data.contents);
+      const parsed = parseRSS(response.data.contents);
       const feedId = crypto.randomUUID();
-      watchedState.feeds.push({ id: feedId, ...feed });
-      posts.forEach((post) =>
-        watchedState.posts.push({ id: crypto.randomUUID(), ...post, feedId }),
-      );
+      const feed = { id: feedId, ...parsed.feed, url };
+      const posts = parsed.posts.map((post) => {
+        return { id: crypto.randomUUID(), ...post, feedId };
+      });
+
+      return { feed, posts };
+    });
+};
+
+const fetchFeed = () => {
+  const url = watchedState.addedUrls.at(-1);
+  loadFeed(url)
+    .then(({ feed, posts }) => {
+      watchedState.feeds.push(feed);
+      watchedState.posts.push(...posts);
       watchedState.form.valid = true;
       watchedState.form.error = "rss-aggregator.form.feedback.success";
     })
@@ -103,6 +113,26 @@ const fetchFeed = () => {
       console.error("Fetch or parse error:", err);
     });
 };
+
 subscribe(watchedState.addedUrls, fetchFeed);
+
+const updateFeed = () => {
+  watchedState.feeds.forEach((storedFeed) => {
+    loadFeed(storedFeed.url).then(({ posts }) => {
+      posts.forEach((post) => {
+        const storedPosts = watchedState.posts.filter(
+          (storedPost) => storedPost.guid === post.guid,
+        );
+        if (storedPosts.length === 0) {
+          watchedState.posts.push({...post,feedId: storedFeed.id });
+        }
+      });
+    }).catch((err)=>{
+      console.error("Fetch or parse error:", err);
+    });
+  });
+};
+
+setInterval(updateFeed, 5000);
 
 initView(watchedState);
