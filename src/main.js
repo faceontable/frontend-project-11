@@ -117,22 +117,26 @@ const fetchFeed = () => {
 subscribe(watchedState.addedUrls, fetchFeed);
 
 const updateFeed = () => {
-  watchedState.feeds.forEach((storedFeed) => {
-    loadFeed(storedFeed.url).then(({ posts }) => {
-      posts.forEach((post) => {
-        const storedPosts = watchedState.posts.filter(
-          (storedPost) => storedPost.guid === post.guid,
-        );
-        if (storedPosts.length === 0) {
-          watchedState.posts.push({...post,feedId: storedFeed.id });
-        }
-      });
-    }).catch((err)=>{
-      console.error("Fetch or parse error:", err);
-    });
+  Promise.allSettled(
+    watchedState.feeds.map(async (storedFeed) => {
+      try {
+        const { posts } = await loadFeed(storedFeed.url);
+        posts.forEach((post) => {
+          const storedPosts = watchedState.posts.filter(
+            (storedPost) => storedPost.guid === post.guid,
+          );
+          if (storedPosts.length === 0) {
+            watchedState.posts.push({ ...post, feedId: storedFeed.id });
+          }
+        });
+      } catch (err) {
+        console.error("Fetch or parse error:", err);
+      }
+    }),
+  ).finally(() => {
+    setTimeout(updateFeed, 5000);
   });
 };
 
-setInterval(updateFeed, 5000);
-
+updateFeed()
 initView(watchedState);
