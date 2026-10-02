@@ -24,6 +24,7 @@ const initView = (watchedState) => {
 
   initFeeds(watchedState);
   initPosts(watchedState);
+  initModal(watchedState);
   subscribe(watchedState.form, renderForm);
 };
 
@@ -75,6 +76,7 @@ const initPosts = (watchedState) => {
         "hover:bg-slate-50",
         "transition-colors",
       );
+      li.dataset.seen = post.seen;
 
       const a = document.createElement("a");
       a.href = post.link;
@@ -82,7 +84,7 @@ const initPosts = (watchedState) => {
       a.rel = "noopener noreferrer";
       a.textContent = post.title;
       a.classList.add(
-        "font-bold",
+        post.seen ? "font-normal" : "font-bold",
         "text-blue-600",
         "hover:text-blue-800",
         "hover:underline",
@@ -106,6 +108,10 @@ const initPosts = (watchedState) => {
         "transition-colors",
         "shrink-0",
       );
+      button.addEventListener("click", (e) => {
+        post.seen = true;
+        watchedState.dialog.postId = post.id;
+      });
       li.appendChild(button);
 
       posts.appendChild(li);
@@ -114,5 +120,7 @@ const initPosts = (watchedState) => {
 
   subscribe(watchedState.posts, renderPosts);
 };
+
+const initModal = ()
 
 export default initView;

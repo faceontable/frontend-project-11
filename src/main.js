@@ -38,6 +38,9 @@ const initialState = {
     valid: true,
     error: null,
   },
+  dialog: {
+    postId: null
+  }
 };
 
 const watchedState = proxy(initialState);
@@ -91,7 +94,7 @@ const loadFeed = (url) => {
       const feedId = crypto.randomUUID();
       const feed = { id: feedId, ...parsed.feed, url };
       const posts = parsed.posts.map((post) => {
-        return { id: crypto.randomUUID(), ...post, feedId };
+        return { id: crypto.randomUUID(), ...post, feedId, seen: false };
       });
 
       return { feed, posts };

@@ -12,6 +12,8 @@ export default {
     "rss-aggregator.feeds.title": "Feeds",
     "rss-aggregator.posts.title": "Posts",
     "rss-aggregator.posts.button": "View",
+    "rss-aggregator.posts.modal.readMore": "Read more",
+    "rss-aggregator.posts.modal.close": "Close",
     "rss-aggregator.form.example": "For example, https://ru.hexlet.io/lessons.rss"
   },
 };

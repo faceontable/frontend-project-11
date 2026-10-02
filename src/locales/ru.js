@@ -12,6 +12,8 @@ export default {
     "rss-aggregator.feeds.title": "Фиды",
     "rss-aggregator.posts.title": "Посты",
     "rss-aggregator.posts.button": "Просмотр",
+    "rss-aggregator.posts.modal.readMore": "Читать полностью",
+    "rss-aggregator.posts.modal.close": "Закрыть",
     "rss-aggregator.form.example": "Например https://ru.hexlet.io/lessons.rss"
   },
 };
