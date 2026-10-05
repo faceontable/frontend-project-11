@@ -14,6 +14,7 @@ export default {
     "rss-aggregator.posts.button": "Просмотр",
     "rss-aggregator.posts.modal.readMore": "Читать полностью",
     "rss-aggregator.posts.modal.close": "Закрыть",
-    "rss-aggregator.form.example": "Например https://ru.hexlet.io/lessons.rss"
+    "rss-aggregator.form.example": "Например https://ru.hexlet.io/lessons.rss",
+    "rss-aggregator.form.feedback.invalidRss": "Ресурс не содержит валидный RSS"
   },
 };

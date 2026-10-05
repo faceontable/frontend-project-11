@@ -14,6 +14,7 @@ export default {
     "rss-aggregator.posts.button": "View",
     "rss-aggregator.posts.modal.readMore": "Read more",
     "rss-aggregator.posts.modal.close": "Close",
-    "rss-aggregator.form.example": "For example, https://ru.hexlet.io/lessons.rss"
+    "rss-aggregator.form.example": "For example, https://ru.hexlet.io/lessons.rss",
+    "rss-aggregator.form.feedback.invalidRss": "Resource does not contain a valid RSS"
   },
 };

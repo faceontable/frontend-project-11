@@ -2,11 +2,15 @@ const parseRSS = (content) => {
   const doc = new DOMParser().parseFromString(content, "application/xml");
   const parseError = doc.querySelector("parsererror");
   if (parseError) {
-    throw new Error("Parsing error");
+    const error = new Error("Parsing error");
+    error.isValidationError = true;
+    throw error;
   }
   const channel = doc.querySelector("channel");
   if (!channel) {
-    throw new Error("No RSS channel found");
+    const error = new Error("No RSS channel found");
+    error.isValidationError = true;
+    throw error;
   }
 
   const items = Array.from(channel.querySelectorAll("item")).map((item) => {
