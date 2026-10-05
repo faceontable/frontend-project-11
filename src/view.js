@@ -141,7 +141,7 @@ const initModal = (watchedState) => {
       header.innerHTML = post.title;
 
       const content = dialog.querySelector("[data-modal-description]");
-      content.innerHTML = post.content;
+      content.innerHTML = post.description;
 
       const openPostButton = dialog.querySelector("[data-modal-link]");
       openPostButton.href = post.link;
