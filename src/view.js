@@ -76,7 +76,6 @@ const initPosts = (watchedState) => {
         "hover:bg-slate-50",
         "transition-colors",
       );
-      li.dataset.seen = post.seen;
 
       const a = document.createElement("a");
       a.href = post.link;
@@ -90,6 +89,7 @@ const initPosts = (watchedState) => {
         "hover:underline",
         "text-base",
       );
+      a.dataset.seen = post.seen;
       li.appendChild(a);
 
       const button = document.createElement("button");

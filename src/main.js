@@ -7,6 +7,7 @@ import { en, ru } from "./locales/index.js";
 import axios from "axios";
 import parseRSS from "./parser.js";
 import locI18next from "loc-i18next";
+import { v4 as uuidv4 } from "uuid";
 
 i18next.init(
   {
@@ -92,10 +93,10 @@ const app = () => {
       )
       .then(function (response) {
         const parsed = parseRSS(response.data.contents);
-        const feedId = crypto.randomUUID();
+        const feedId = uuidv4();
         const feed = { id: feedId, ...parsed.feed, url };
         const posts = parsed.posts.map((post) => {
-          return { id: crypto.randomUUID(), ...post, feedId, seen: false };
+          return { id: uuidv4(), ...post, feedId, seen: false };
         });
 
         return { feed, posts };
