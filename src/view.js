@@ -108,7 +108,7 @@ const initPosts = (watchedState) => {
         "transition-colors",
         "shrink-0",
       );
-      button.addEventListener("click", (e) => {
+      button.addEventListener("click", () => {
         post.seen = true;
         watchedState.dialog.postId = post.id;
       });
@@ -121,6 +121,36 @@ const initPosts = (watchedState) => {
   subscribe(watchedState.posts, renderPosts);
 };
 
-const initModal = ()
+const initModal = (watchedState) => {
+  document.querySelectorAll("[data-modal-close]").forEach((closeButton) =>
+    closeButton.addEventListener("click", () => {
+      watchedState.dialog.postId = null;
+    }),
+  );
+
+  const renderDialog = () => {
+    const { postId } = watchedState.dialog;
+    const dialog = document.querySelector("dialog");
+
+    if (postId === null) {
+      dialog.close();
+    } else {
+      const post = watchedState.posts.find((p) => p.id === postId);
+
+      const header = dialog.querySelector("[data-modal-title]");
+      header.innerHTML = post.title;
+
+      const content = dialog.querySelector("[data-modal-description]");
+      content.innerHTML = post.content;
+
+      const openPostButton = dialog.querySelector("[data-modal-link]");
+      openPostButton.href = post.link;
+
+      dialog.showModal();
+    }
+  };
+
+  subscribe(watchedState.dialog, renderDialog);
+};
 
 export default initView;
